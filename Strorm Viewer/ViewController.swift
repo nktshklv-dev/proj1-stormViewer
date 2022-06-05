@@ -10,14 +10,21 @@ import UIKit
 class ViewController: UITableViewController {
 
     
-    var pictures: [String] = []
+    var pictures: [String] = []{
+        didSet{
+            pictures = pictures.sorted(by: {
+                s1, s2 in s1.prefix(8) < s2.prefix(8)
+            })
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         let fm = FileManager.default
         let path = Bundle.main.resourcePath!
         let items = try! fm.contentsOfDirectory(atPath: path)
-        
+        title = "Storm Viewer"
+        navigationController?.navigationBar.prefersLargeTitles = true
         
         for item in items{
             if item.hasPrefix("nssl"){
@@ -43,11 +50,14 @@ class ViewController: UITableViewController {
         if let vc = storyboard?.instantiateViewController(withIdentifier: "picture") as? DetailViewController{
             vc.selectedImage = pictures[indexPath.row]
             navigationController?.pushViewController(vc, animated: true)
+            vc.images = pictures
         }
         else{
             tableView.deselectRow(at: indexPath, animated: true)
         }
     }
+    
+  
 
 }
 

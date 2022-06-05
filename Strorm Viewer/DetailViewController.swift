@@ -11,6 +11,7 @@ class DetailViewController: UIViewController {
 
     @IBOutlet var imageView: UIImageView!
     var selectedImage: String?
+    var images: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,8 +19,20 @@ class DetailViewController: UIViewController {
             imageView.image = UIImage(named: image)
         }
         
-
-       
+        title = "Picture \(Int(images.firstIndex(of: selectedImage ?? "")!) + 1) of \(images.count)"
+        navigationItem.largeTitleDisplayMode = .never
+        
+    }
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationController?.hidesBarsOnTap = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.hidesBarsOnTap = false
     }
     
 
